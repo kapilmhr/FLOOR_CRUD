@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_floor/AddPerson.dart';
+import 'package:flutter_floor/screens/UpdatePersonScreen.dart';
 
-import 'database/PersonDatabase.dart';
-import 'model/Person.dart';
+import '../database/PersonDatabase.dart';
+import '../model/Person.dart';
+import 'AddPerson.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,11 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("All People"),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              var p = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddPerson()),
               );
+              setState(() {
+                personList.add(p);
+              });
             },
             icon: Icon(
               Icons.add,
@@ -70,7 +74,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               elevation: 20,
                               onSelected: (value) {
                                 print(value);
-                                if (value == 2) {
+                                if (value == 1) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            UpdatePersonScreen(person, (p) {
+                                              setState(() {
+                                                personList[index] = p;
+                                              });
+                                            })),
+                                  );
+                                } else if (value == 2) {
                                   database.personDao.deletePerson(person);
                                   setState(() {
                                     personList.remove(person);

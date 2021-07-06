@@ -156,6 +156,16 @@ class _$PersonDao extends PersonDao {
   }
 
   @override
+  Future<Person?> getPersonByName(String name) async {
+    return _queryAdapter.query('SELECT * FROM person WHERE name LIKE ?1',
+        mapper: (Map<String, Object?> row) => Person(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            age: row['age'] as int),
+        arguments: [name]);
+  }
+
+  @override
   Future<void> insertPerson(Person person) async {
     await _personInsertionAdapter.insert(person, OnConflictStrategy.abort);
   }

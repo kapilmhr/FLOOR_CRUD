@@ -4,8 +4,8 @@ import 'package:floor/floor.dart';
 class Person{
   @PrimaryKey(autoGenerate: true)
   final int? id;
-  final String name;
-  final int age;
+  String name;
+  int age;
 
   Person({this.id, required this.name, required this.age});
 }

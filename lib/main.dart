@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_floor/HomeScreen.dart';
+import 'package:flutter_floor/screens/HomeScreen.dart';
 
 
 import 'database/PersonDatabase.dart';
