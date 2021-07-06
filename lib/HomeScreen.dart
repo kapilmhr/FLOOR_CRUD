@@ -12,11 +12,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Person> personList = [];
+  late PersonDatabase database;
+
   @override
   void initState() {
     getAllPeople();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,23 +42,73 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Container(
-        child: Column(
-          children: [Text("All People")],
-        ),
+        child: personList.length > 0
+            ? ListView.builder(
+                itemBuilder: (context, index) {
+                  var person = personList[index];
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                person.name,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("${person.age}"),
+                            ],
+                          ),
+                          PopupMenuButton(
+                              elevation: 20,
+                              onSelected: (value) {
+                                print(value);
+                                if (value == 2) {
+                                  database.personDao.deletePerson(person);
+                                  setState(() {
+                                    personList.remove(person);
+                                  });
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                      child: Text("Update"),
+                                      value: 1,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text("Delete"),
+                                      value: 2,
+                                    ),
+                                  ])
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                itemCount: personList.length,
+              )
+            : Center(
+                child: Text("No any data"),
+              ),
       ),
     );
   }
 
-  void getAllPeople() async{
-    final database = await $FloorPersonDatabase.databaseBuilder('app_database.db').build();
-
+  void getAllPeople() async {
+    database =
+        await $FloorPersonDatabase.databaseBuilder('app_database.db').build();
     final personDao = database.personDao;
 
-    // List<Person> people= await personDao.getAllPerson();
-    List<Person> people= await personDao.getAllPersonByAge();
-    people.forEach((element) {
-      print(element.name);
-      print(element.age);
+    List<Person> people = await personDao.getAllPerson();
+    setState(() {
+      personList.addAll(people);
     });
   }
 }

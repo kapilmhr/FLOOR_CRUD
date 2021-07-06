@@ -74,6 +74,9 @@ class _AddPersonState extends State<AddPerson> {
                 }
               },
               child: Container(
+                width: 200,
+                height: 50,
+                alignment: Alignment.center,
                 color: Colors.blueAccent,
                 child: Text(
                   "Submit",

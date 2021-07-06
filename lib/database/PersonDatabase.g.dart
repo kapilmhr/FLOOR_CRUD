@@ -105,6 +105,24 @@ class _$PersonDao extends PersonDao {
                   'id': item.id,
                   'name': item.name,
                   'age': item.age
+                }),
+        _personUpdateAdapter = UpdateAdapter(
+            database,
+            'Person',
+            ['id'],
+            (Person item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'age': item.age
+                }),
+        _personDeletionAdapter = DeletionAdapter(
+            database,
+            'Person',
+            ['id'],
+            (Person item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'age': item.age
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -114,6 +132,10 @@ class _$PersonDao extends PersonDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Person> _personInsertionAdapter;
+
+  final UpdateAdapter<Person> _personUpdateAdapter;
+
+  final DeletionAdapter<Person> _personDeletionAdapter;
 
   @override
   Future<List<Person>> getAllPerson() async {
@@ -136,5 +158,15 @@ class _$PersonDao extends PersonDao {
   @override
   Future<void> insertPerson(Person person) async {
     await _personInsertionAdapter.insert(person, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updatePerson(Person person) async {
+    await _personUpdateAdapter.update(person, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deletePerson(Person person) async {
+    await _personDeletionAdapter.delete(person);
   }
 }
