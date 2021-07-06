@@ -52,6 +52,12 @@ abstract class PersonDao{
 
   @insert
   Future<void> insertPerson(Person person);
+
+  @update
+  Future<void> updatePerson(Person person);
+
+  @delete
+  Future<void> deletePerson(Person person);
 }
 ```
 
