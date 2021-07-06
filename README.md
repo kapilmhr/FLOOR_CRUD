@@ -26,7 +26,7 @@ dev_dependencies:
 
 ## Create a Model class
 
-```
+```dart
 @entity
 class Person{
   @PrimaryKey(autoGenerate: true)
@@ -41,7 +41,7 @@ class Person{
 ## Create a DAO class
 - a class that performs all database actions
 
-```
+```dart
 @dao
 abstract class PersonDao{
   @Query('SELECT * FROM person')
@@ -66,7 +66,7 @@ abstract class PersonDao{
 
 ## Create a database class
 
-```
+```dart
 @Database(version: 1, entities: [Person])
 abstract class PersonDatabase extends FloorDatabase{
   PersonDao get personDao;
