@@ -50,6 +50,9 @@ abstract class PersonDao{
   @Query('SELECT * FROM person WHERE age%2 =0')
   Future<List<Person>> getAllPersonByAge();
 
+ @Query('SELECT * FROM person WHERE name LIKE :name')
+  Future<Person?> getPersonByName(String name);
+
   @insert
   Future<void> insertPerson(Person person);
 
